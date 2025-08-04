@@ -4,6 +4,7 @@ from circleshape import *
 from player import *
 from asteroid import *
 from asteroidfield import *
+import random
 
 def main():
     print("Starting Asteroids!")
@@ -44,9 +45,9 @@ def main():
                 run_game = False
             for shot in shots:
                 if asteroid.collisions(shot):
-                    if asteroid.radius > 20:
-                        Asteroid(asteroid.position.copy(), asteroid.radius // 2, asteroid.velocity.copy().rotate(30) * 0.50)
-                        Asteroid(asteroid.position.copy(), asteroid.radius // 2, asteroid.velocity.copy().rotate(-30) * 0.50)
+                    if asteroid.radius > ASTEROID_MIN_RADIUS:
+                        Asteroid(asteroid.position.copy(), asteroid.radius // 2, asteroid.velocity.copy().rotate(random.uniform(20,50)) * ASTEROID_BREAK_SPEED_MULTIPLIER)
+                        Asteroid(asteroid.position.copy(), asteroid.radius // 2, asteroid.velocity.copy().rotate(-1*random.uniform(20,50)) * ASTEROID_BREAK_SPEED_MULTIPLIER)
                     shot.kill()
                     asteroid.kill()
 
