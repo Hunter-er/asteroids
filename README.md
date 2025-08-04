@@ -1,3 +1,3 @@
 # asteroids
 
-# Yet another asteroids clone
+Yet another asteroids clone
