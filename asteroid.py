@@ -2,8 +2,11 @@ import pygame
 from circleshape import CircleShape
 
 class Asteroid(CircleShape):
-    def __init__(self, x, y, radius):
-        super().__init__(x, y, radius)
+    def __init__(self, position, radius, velocity):
+        pygame.sprite.Sprite.__init__(self, self.containers)
+        self.radius = radius
+        self.velocity = velocity
+        self.position = position
 
     def draw(self, screen, color="white", width=2):
         # sub-classes must override

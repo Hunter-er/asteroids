@@ -7,6 +7,7 @@ class Player(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         self.rotation = 0
+        self._last_shot_time = 0
 
     # in the player class
     def triangle(self):
@@ -36,6 +37,9 @@ class Player(CircleShape):
             
         if keys[pygame.K_s]:
             self.position = self.move(-1 * dt)
+
+        if keys[pygame.K_SPACE]:
+            self.shoot()
     
     def rotate(self, dt):
         return ( (PLAYER_TURN_SPEED * dt) + self.rotation )
@@ -43,6 +47,26 @@ class Player(CircleShape):
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
-
         return self.position
+    
+    def shoot(self):
+        if pygame.time.get_ticks() > self._last_shot_time + PLAYER_FIRE_RATE:
+            Shot(self.position.copy(), self.rotation)
+            self._last_shot_time = pygame.time.get_ticks()
+        
 
+class Shot(CircleShape):
+    def __init__(self, position, rotation):
+        pygame.sprite.Sprite.__init__(self, self.containers)
+        self.position = position
+        self.rotation = rotation
+        self.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.radius = SHOT_RADIUS
+
+    def draw(self, screen, color="red", width=2):
+        # sub-classes must override
+        pygame.draw.circle(screen, color, self.position, self.radius, width)
+
+    def update(self, dt):
+        # sub-classes must override
+        self.position += (self.velocity * PLAYER_SHOOT_SPEED * dt)
